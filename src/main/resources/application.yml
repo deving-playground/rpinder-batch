@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: rpinder-batch
+  profiles:
+    active: local
+  batch:
+    job:
+      names: ${job.name:NONE}
+  task:
+    execution:
+      pool:
+        core-size: 1
+        max-size: 1
+
+app:
+  elasticsearch:
+    host:
+      - loaclhost:9200
+    indcies:
+      index: ring-price
+      type: _doc
+
+
+---
+spring:
+  profiles: local
+
+app:
+  elasticsearch:
+    host:
+      - loaclhost:9200
+
+
+---
+spring:
+  profiles: develop
+
+app:
+  elasticsearch:
+    host:
+      - loaclhost:9200
+
+
+---
+spring:
+  profiles: production
+
+app:
+  elasticsearch:
+    host:
+      - loaclhost:9200
