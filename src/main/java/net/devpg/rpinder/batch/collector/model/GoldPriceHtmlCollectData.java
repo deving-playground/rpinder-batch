@@ -1,22 +1,18 @@
 package net.devpg.rpinder.batch.collector.model;
 
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import net.devpg.rpinder.batch.collector.vo.GoldPriceHtml;
-
 @ToString
-@NoArgsConstructor(staticName = "newInstance")
-public class GoldPriceHtmlCollectData implements CollectData<GoldPriceHtml> {
-	private GoldPriceHtml goldPriceHtml;
+public class GoldPriceHtmlCollectData<E> implements CollectData<E> {
+	private E e;
 
 	@Override
-	public void setData(GoldPriceHtml goldPriceHtml) {
-		this.goldPriceHtml = goldPriceHtml;
+	public void setData(E e) {
+		this.e = e;
 	}
 
 	@Override
-	public GoldPriceHtml getData() {
-		return goldPriceHtml;
+	public E getData() {
+		return e;
 	}
 }

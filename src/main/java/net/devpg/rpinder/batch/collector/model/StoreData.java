@@ -1,7 +1,7 @@
 package net.devpg.rpinder.batch.collector.model;
 
-public interface StoreData<T> {
-	void setData(T t);
+public interface StoreData<E> {
+	void setData(E e);
 
-	T getData();
+	E getData();
 }

@@ -12,5 +12,5 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @AllArgsConstructor(staticName = "from")
 public class Price {
-	private final BigDecimal price;
+	private final BigDecimal value;
 }
