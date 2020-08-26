@@ -15,6 +15,8 @@ import net.devpg.rpinder.batch.collector.model.StoreData;
 import net.devpg.rpinder.batch.collector.processor.BaseRefiningProcessor;
 import net.devpg.rpinder.batch.collector.reader.BaseCollector;
 import net.devpg.rpinder.batch.collector.tasklet.CloseResourceTasklet;
+import net.devpg.rpinder.batch.collector.vo.GoldPrice;
+import net.devpg.rpinder.batch.collector.vo.GoldPriceHtml;
 import net.devpg.rpinder.batch.collector.writer.BaseIndexer;
 
 @EnableBatchProcessing
@@ -23,9 +25,9 @@ import net.devpg.rpinder.batch.collector.writer.BaseIndexer;
 public class CollectorJobStepConfig {
 	private final JobBuilderFactory jobBuilderFactory;
 	private final StepBuilderFactory stepBuilderFactory;
-	private final BaseCollector goldMarketPriceCollector;
-	private final BaseRefiningProcessor goldPriceRefiningProcessor;
-	private final BaseIndexer goldPriceIndexer;
+	private final BaseCollector<CollectData<GoldPriceHtml>> goldPriceCollector;
+	private final BaseRefiningProcessor<CollectData<GoldPriceHtml>, StoreData<GoldPrice>> goldPriceRefiningProcessor;
+	private final BaseIndexer<StoreData<GoldPrice>> goldPriceIndexer;
 	private final CloseResourceTasklet closeResourceTasklet;
 
 	@Bean
@@ -40,8 +42,8 @@ public class CollectorJobStepConfig {
 	@Bean
 	public Step collectorStep() {
 		return stepBuilderFactory.get("collectorStep")
-			.<CollectData, StoreData>chunk(1)
-			.reader(goldMarketPriceCollector::collect)
+			.<CollectData<GoldPriceHtml>, StoreData<GoldPrice>>chunk(1)
+			.reader(goldPriceCollector::collect)
 			.processor(goldPriceRefiningProcessor)
 			.writer(goldPriceIndexer)
 			.build();
