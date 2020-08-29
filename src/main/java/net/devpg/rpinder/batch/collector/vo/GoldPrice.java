@@ -10,6 +10,5 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @AllArgsConstructor(staticName = "of")
 public class GoldPrice {
-	private final GoldPriceByType priceOnPurchase;
-	private final GoldPriceByType priceOnSell;
+    private final GoldPriceByType priceOnPurchase;
 }

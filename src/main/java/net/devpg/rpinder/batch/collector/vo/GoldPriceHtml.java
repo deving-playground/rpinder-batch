@@ -10,5 +10,5 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @AllArgsConstructor(staticName = "from")
 public class GoldPriceHtml {
-	private String contents;
+    private final String contents;
 }

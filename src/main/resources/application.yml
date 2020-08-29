@@ -16,9 +16,20 @@ app:
   elasticsearch:
     host:
       - loaclhost:9200
-    indcies:
+    indices:
       index: ring-price
       type: _doc
+  collect:
+    target: http://localhost:8080
+
+collect:
+  url: http://goldgold.co.kr/charts/1_price1.php
+  query:
+    dateQuery:
+      - "html > body > table > tbody > tr >td >table > tbody > tr > td[height=30]"
+      - "td[align=center]"
+    todayGoldPriceQuery: "html > body > table > tbody > tr >td > table > tbody > tr > td > b"
+  filePath: /opt/data/data.txt
 
 
 ---

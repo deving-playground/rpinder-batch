@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: rpinder-batch
+  profiles:
+    active: local
+  batch:
+    job:
+      names: ${job.name:NONE}
+  task:
+    execution:
+      pool:
+        core-size: 1
+        max-size: 1
+
+app:
+  elasticsearch:
+    host:
+      - localhost:9200
+    indices:
+      index: ring-price
+      type: _doc
+  collect:
+    target: http://localhost:8080
+
+
+---
+spring:
+  profiles: test
+
+app:
+  elasticsearch:
+    host:
+      - localhost:9200
