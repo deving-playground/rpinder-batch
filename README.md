@@ -21,3 +21,5 @@ docker-compose -f docker/docker-compose.yml up -d
  2. `deploy` 클릭
 ```
 
+## Run Batch Application
+- program argument : `--job.name=collectorJob`

@@ -19,6 +19,21 @@ app:
     indcies:
       index: ring-price
       type: _doc
+  crawl:
+    site: http://www.koreagoldx.co.kr/marketPrice/pure.asp
+    pattern:
+      common: "body > div:nth-child(1) > div > table > tbody > tr > td:nth-child(1) > div > table:nth-child(3) > tbody > tr > td:nth-child(3) > div > div"
+      purchase:
+        gold-24k: "table:nth-child(7) > tbody > tr:nth-child(2) > td:nth-child(2) > table > tbody > tr:nth-child(1) > td > span"
+#        18k:
+#        14k:
+      sell:
+        common: "div.mt_10 > table > tbody > tr:nth-child(2) > td:nth-child(2) > table > tbody"
+        gold-24k: "tr:nth-child(1) > td > span"
+        gold-18k: "tr:nth-child(3) > td"
+        gold-14k: "tr:nth-child(5) > td"
+    store:
+      directory: ./data
 
 
 ---
