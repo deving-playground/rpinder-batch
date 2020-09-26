@@ -23,16 +23,16 @@ app:
     site: http://goldgold.co.kr/charts/1_price1.php
     pattern:
       common: "body > table > tbody"
-      date:
+      date: "tr:nth-child(7) > td > table > tbody > tr:nth-child(3) > td:nth-child(8)"
       purchase:
-        gold-24k: "tr:nth-child(7) > td > table > tbody > tr:nth-child(5) > td:nth-child(2) > b"
+        gold-24k: "tr:nth-child(7) > td > table > tbody > tr:nth-child(5) > td:nth-child(8) > b"
       #        18k:
       #        14k:
       sell:
         common: "tr:nth-child(9) > td > table > tbody"
-        gold-24k: "tr:nth-child(3) > td:nth-child(2) > b"
-        gold-18k: "tr:nth-child(5) > td:nth-child(2)"
-        gold-14k: "tr:nth-child(7) > td:nth-child(2)"
+        gold-24k: "tr:nth-child(3) > td:nth-child(8) > b"
+        gold-18k: "tr:nth-child(5) > td:nth-child(8)"
+        gold-14k: "tr:nth-child(7) > td:nth-child(8)"
     store:
       directory: ./data
 

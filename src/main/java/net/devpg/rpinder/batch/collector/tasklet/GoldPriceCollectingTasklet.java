@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import net.devpg.rpinder.batch.collector.extractor.DailyGoldPriceExtractor;
 import net.devpg.rpinder.batch.collector.parser.JsoupParser;
+import net.devpg.rpinder.batch.collector.validator.DailyGoldPriceDateValidator;
 import net.devpg.rpinder.batch.collector.vo.GoldPrice;
 import net.devpg.rpinder.batch.collector.writer.JsonFileWriter;
 
@@ -26,6 +27,7 @@ public class GoldPriceCollectingTasklet implements Tasklet, StepExecutionListene
     @Value("${app.crawl.site}")
     private String crawlSite;
     private final DailyGoldPriceExtractor priceExtractor;
+    private final DailyGoldPriceDateValidator priceDateValidator;
     private final JsonFileWriter jsonFileWriter;
 
     @Override
@@ -47,6 +49,10 @@ public class GoldPriceCollectingTasklet implements Tasklet, StepExecutionListene
         Document crawlingDocument = JsoupParser.getDocument(crawlSite);
         if (crawlingDocument == null) {
             log.error("document is null");
+            return RepeatStatus.FINISHED;
+        }
+        //날짜 유효성 체크
+        if (!priceDateValidator.isToday(crawlingDocument)) {
             return RepeatStatus.FINISHED;
         }
 

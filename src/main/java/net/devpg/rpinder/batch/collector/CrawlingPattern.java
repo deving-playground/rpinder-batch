@@ -10,6 +10,7 @@ import lombok.Setter;
 @ConfigurationProperties(prefix = "app.crawl.pattern")
 public class CrawlingPattern {
     private String common;
+    private String date;
     private GoldPriceTypePattern purchase;
     private GoldPriceTypePattern sell;
 
@@ -23,6 +24,10 @@ public class CrawlingPattern {
 
     public GoldPriceTypePattern sell() {
         return sell;
+    }
+
+    public String date() {
+        return date;
     }
 
 }

@@ -28,7 +28,6 @@ public class DailyGoldPriceExtractor implements PriceExtractor<Document, GoldPri
 
     @Override
     public GoldPrice extract(Document document) {
-        log.info(document.toString());
         //Common Pattern
         Elements commonElement = document.select(crawlingPattern.common());
 
