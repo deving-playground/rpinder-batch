@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.util.Strings;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
@@ -23,20 +24,16 @@ import net.devpg.rpinder.batch.util.BigDecimalUtil;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DailyGoldPriceExtractor implements PriceExtractor<Document, GoldPrice> {
+public class GoldSellPriceExtractor implements Extractor<Document, GoldPrice> {
     private final CrawlingPattern crawlingPattern;
 
     @Override
-    public GoldPrice extract(Document document) {
+    public void extract(Document document, GoldPrice goldPrice) {
         //Common Pattern
         Elements commonElement = document.select(crawlingPattern.common());
-
-        //Extract Purchase Price
-        GoldPriceByType goldPriceByPurchase = extractGoldPriceByPurchase(commonElement);
-        //Extract Sell Price
-        GoldPriceByType goldPriceBySell = extractGoldPriceBySell(commonElement);
-
-        return GoldPrice.of(goldPriceByPurchase, goldPriceBySell);
+        Elements sellCommonElement = commonElement.select(crawlingPattern.sell().common());
+        GoldPriceByType goldPriceBySell = extractGoldPriceBySell(sellCommonElement);
+        goldPrice.priceOnSell(goldPriceBySell);
     }
 
     private GoldPriceByType extractGoldPriceBySell(Elements commonElement) {
@@ -53,13 +50,5 @@ public class DailyGoldPriceExtractor implements PriceExtractor<Document, GoldPri
             .anyMatch(price -> price.value().compareTo(MINUS_ONE) == 0))
             throw new RuntimeException("Part of the selling price does not exist");
         return GoldPriceByType.of(goldPriceList.get(0), goldPriceList.get(1), goldPriceList.get(2));
-    }
-
-    private GoldPriceByType extractGoldPriceByPurchase(Elements commonElement) {
-        return Optional.of(commonElement.select(crawlingPattern.purchase().gold24k()))
-            .filter(elements -> !Strings.isBlank(elements.text()))
-            .map(elements -> GoldPriceByType.of(
-                Price.from(BigDecimalUtil.valueOf(elements.text().replace(",", ""))), null, null))
-            .orElseThrow(() -> new RuntimeException("The purchase price does not exist"));
     }
 }

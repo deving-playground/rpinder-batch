@@ -1,4 +1,4 @@
-package net.devpg.rpinder.batch.collector.validator;
+package net.devpg.rpinder.batch.collector.extractor;
 
 import static net.devpg.rpinder.batch.util.LocalDateTimeUtil.*;
 
@@ -12,24 +12,20 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import net.devpg.rpinder.batch.collector.CrawlingPattern;
+import net.devpg.rpinder.batch.collector.vo.GoldPrice;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DailyGoldPriceDateValidator {
+public class DateExtractor implements Extractor<Document, GoldPrice> {
     private final CrawlingPattern crawlingPattern;
 
-    public boolean isToday(Document document) {
+    @Override
+    public void extract(Document document, GoldPrice goldPrice) {
         //Common Pattern
         Elements commonElement = document.select(crawlingPattern.common());
+        //Extract Today Date
         Elements dateElement = commonElement.select(crawlingPattern.date());
-
-        LocalDate referenceDate = LocalDate.now(ZONE_ID);
-        LocalDate comparisonDate = LocalDate.parse(dateElement.text(), DATE_FORMATTER);
-
-        boolean valid = referenceDate.equals(comparisonDate);
-        if (!valid)
-            log.warn("date is not valid ==> reference date : {}, comparison date : {}", referenceDate, comparisonDate);
-        return valid;
+        goldPrice.date(LocalDate.parse(dateElement.text(), DATE_FORMATTER).format(DATE_FORMATTER));
     }
 }

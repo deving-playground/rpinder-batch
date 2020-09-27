@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import net.devpg.rpinder.batch.collector.extractor.DailyGoldPriceExtractor;
 import net.devpg.rpinder.batch.collector.parser.JsoupParser;
+import net.devpg.rpinder.batch.collector.service.GoldPriceExtractService;
 import net.devpg.rpinder.batch.collector.validator.DailyGoldPriceDateValidator;
 import net.devpg.rpinder.batch.collector.vo.GoldPrice;
 import net.devpg.rpinder.batch.collector.writer.JsonFileWriter;
@@ -26,7 +26,7 @@ import net.devpg.rpinder.batch.collector.writer.JsonFileWriter;
 public class GoldPriceCollectingTasklet implements Tasklet, StepExecutionListener {
     @Value("${app.crawl.site}")
     private String crawlSite;
-    private final DailyGoldPriceExtractor priceExtractor;
+    private final GoldPriceExtractService goldPriceExtractService;
     private final DailyGoldPriceDateValidator priceDateValidator;
     private final JsonFileWriter jsonFileWriter;
 
@@ -57,7 +57,7 @@ public class GoldPriceCollectingTasklet implements Tasklet, StepExecutionListene
         }
 
         //필요한 데이터만 추출
-        GoldPrice goldPrice = priceExtractor.extract(crawlingDocument);
+        GoldPrice goldPrice = goldPriceExtractService.extract(crawlingDocument);
 
         //파일로 적재
         jsonFileWriter.write(goldPrice);
