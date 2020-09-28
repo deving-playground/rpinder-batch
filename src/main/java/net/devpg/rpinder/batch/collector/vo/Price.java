@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 
 import org.springframework.util.Assert;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -13,7 +16,9 @@ import lombok.experimental.Accessors;
 @ToString
 @EqualsAndHashCode
 @Accessors(fluent = true)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Price {
+    @JsonValue
     private final BigDecimal value;
 
     public static Price from(String value) {
